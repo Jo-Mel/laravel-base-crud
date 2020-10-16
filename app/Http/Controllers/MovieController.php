@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Movies;
+use App\Movie;
 class MovieController extends Controller
 {
     /**
@@ -13,10 +13,12 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $data = Movies::all();
-        // dd($data);
-        return view('index', compact('data'));
+        $movies = Movie::all();
+        
+        return view('index', compact('movies'));
     }
+
+   
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +27,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -36,7 +38,18 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $request->validate([
+            'titolo' => 'required|max:100',
+            'produzione' => 'required',
+            'descrizione' => 'required|min:5|max:200',
+        ]);
+        $movieNew = new Movie;
+        $movieNew->fill($data);
+        $saved = $movieNew->save();
+        if ($saved) {
+           return redirect()->route('movies.index');
+        }
     }
 
     /**
@@ -47,7 +60,9 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        //
+        $movie = Movie::find($id);
+
+        return view('show', compact('movie'));
     }
 
     /**
