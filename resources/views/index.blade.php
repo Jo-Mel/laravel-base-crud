@@ -9,6 +9,14 @@
                 {{ $movie->titolo }}
             </a>
         </li>
+        <li>
+            <form action="{{ route('movies.destroy', $movie->id) }}" method="post">
+            @csrf
+            @method('DELETE')
+            <input type="submit" value="Canc">
+
+            </form>
+        </li>
         
         {{-- <li>{{ $movie->produzione }}</li>
         <li>{{ $movie->descrizione }}</li> --}}
